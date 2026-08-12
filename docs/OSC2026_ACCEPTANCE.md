@@ -26,7 +26,7 @@ git diff --exit-code
 ## Acceptance evidence
 
 - A runnable `cmd/main` demonstrates the core parser, matcher, and
-  next-trigger API.
+  next-trigger API, including canonical serialization.
 - The test suite covers valid expressions, month/day aliases, malformed input,
   numeric overflow, DOM/DOW semantics, cross-month rollover, and leap years.
 - `.github/workflows/ci.yml` installs the latest official MoonBit release,

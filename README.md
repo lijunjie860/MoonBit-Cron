@@ -16,6 +16,8 @@ It is suitable for schedulers, automation tools, backend services, and CLIs.
   oversized numeric fields before integer overflow.
 - Uses standard Cron day-of-month/day-of-week **OR** semantics.
 - Finds the next matching minute across month and leap-year boundaries.
+- Exposes `CronExpr::to_string()` for canonical serialization and config
+  round-tripping.
 - Supports wasm, wasm-gc, JavaScript, and native targets.
 
 ## Install
@@ -69,9 +71,14 @@ Expected output:
 
 ```text
 Expression: */15 9-17 * * 1-5
+Canonical: */15 9-17 * * 1-5
 Matches now: false
 Next trigger: 2026-10-15 9:15 (weekday 4)
 ```
+
+`CronExpr::to_string()` emits a normalized numeric form. Named aliases such
+as `JAN` and `MON` are parsed correctly and serialize to their numeric values,
+which makes persisted schedules deterministic.
 
 ## Validation
 

@@ -15,6 +15,7 @@ fn main {
     Err(message) => println("Parse error: \{message}")
     Ok(expr) => {
       println("Expression: \{expression}")
+      println("Canonical: \{expr.to_string()}")
       println("Matches now: \{expr.matches(now)}")
       match expr.next(now) {
         Err(message) => println("Schedule error: \{message}")
