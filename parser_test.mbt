@@ -125,3 +125,12 @@ test "parse accepts standard month and weekday names" {
     Err(message) => fail("expected named fields to parse: \{message}")
   }
 }
+
+///|
+test "cron expressions round trip through to_string" {
+  let source = "*/15 9-17 * 1,3 1-5"
+  match parse(source) {
+    Ok(expression) => assert_eq(expression.to_string(), source)
+    Err(message) => fail("expected expression to parse: \{message}")
+  }
+}
