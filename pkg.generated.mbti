@@ -1,0 +1,53 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "lijunjie860/moonbit_cron"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn add_minute(Time) -> Time
+
+pub fn days_in_month(Int, Int) -> Int
+
+pub fn is_leap_year(Int) -> Bool
+
+pub fn parse(String) -> Result[CronExpr, String]
+
+pub fn weekday(Int, Int, Int) -> Int
+
+// Errors
+
+// Types and methods
+pub(all) struct CronExpr {
+  minute : CronField
+  hour : CronField
+  day_of_month : CronField
+  month : CronField
+  day_of_week : CronField
+} derive(Eq, @debug.Debug)
+pub fn CronExpr::matches(Self, Time) -> Bool
+pub fn CronExpr::new(CronField, CronField, CronField, CronField, CronField) -> Self
+pub fn CronExpr::next(Self, Time) -> Result[Time, String]
+
+pub(all) enum CronField {
+  All
+  Value(Int)
+  Range(Int, Int)
+  Step(CronField, Int)
+  List(Array[CronField])
+} derive(Eq, @debug.Debug)
+
+pub(all) struct Time {
+  mut year : Int
+  mut month : Int
+  mut day : Int
+  mut hour : Int
+  mut minute : Int
+  mut weekday : Int
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits
+

@@ -1,0 +1,7 @@
+import {
+  "lijunjie860/moonbit_cron" @cron,
+}
+
+options(
+  "is-main": true,
+)

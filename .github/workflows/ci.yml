@@ -1,0 +1,36 @@
+name: MoonBit CI
+
+on:
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+
+jobs:
+  verify:
+    name: Verify (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup latest MoonBit
+        uses: hustcer/setup-moonbit@v1
+        with:
+          version: latest
+
+      - name: Verify toolchain
+        run: moon version
+
+      - name: Format, check, and build
+        run: |
+          moon fmt
+          moon check --target all --warn-list +73 --deny-warn
+          moon build --target all --warn-list +73 --deny-warn
+          moon info
+
+      - name: Test every supported target
+        run: moon test --target all --warn-list +73 --deny-warn
