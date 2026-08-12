@@ -96,6 +96,8 @@ moon test --target all --warn-list +73 --deny-warn
 moon info
 ```
 
+See [CHANGELOG.md](CHANGELOG.md) for release history.
+
 ## License
 
 Copyright (c) 2026 lijunjie860. Licensed under the [MIT License](LICENSE).

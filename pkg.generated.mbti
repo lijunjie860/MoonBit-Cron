@@ -29,6 +29,7 @@ pub(all) struct CronExpr {
 pub fn CronExpr::matches(Self, Time) -> Bool
 pub fn CronExpr::new(CronField, CronField, CronField, CronField, CronField) -> Self
 pub fn CronExpr::next(Self, Time) -> Result[Time, String]
+pub fn CronExpr::to_string(Self) -> String
 
 pub(all) enum CronField {
   All
