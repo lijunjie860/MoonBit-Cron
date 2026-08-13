@@ -132,3 +132,28 @@ test "next trigger crosses the end of a month" {
     Err(_) => fail("expected the first minute of the next month")
   }
 }
+
+///|
+test "next trigger crosses the end of a year" {
+  let expr = match parse("0 0 1 1 *") {
+    Ok(value) => value
+    Err(_) => panic()
+  }
+  let from = Time::{
+    year: 2026,
+    month: 12,
+    day: 31,
+    hour: 23,
+    minute: 59,
+    weekday: 4,
+  }
+  match expr.next(from) {
+    Ok(next_time) => {
+      assert_eq(next_time.year, 2027)
+      assert_eq(next_time.month, 1)
+      assert_eq(next_time.day, 1)
+      assert_eq(next_time.weekday, 5)
+    }
+    Err(_) => fail("expected the first minute of the next year")
+  }
+}
