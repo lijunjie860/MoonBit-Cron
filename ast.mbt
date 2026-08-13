@@ -29,14 +29,15 @@ pub fn CronExpr::new(
 }
 
 ///|
-fn CronField::to_cron_string(self : CronField) -> String {
+/// Return the canonical string form of one Cron field.
+pub fn CronField::to_string(self : CronField) -> String {
   match self {
     All => "*"
     Value(value) => value.to_string()
     Range(start, end) => "\{start}-\{end}"
-    Step(base, step) => "\{base.to_cron_string()}/\{step}"
+    Step(base, step) => "\{base.to_string()}/\{step}"
     List(fields) => {
-      let parts = fields.map(fn(field) { field.to_cron_string() })
+      let parts = fields.map(fn(field) { field.to_string() })
       parts.join(",")
     }
   }
@@ -46,11 +47,11 @@ fn CronField::to_cron_string(self : CronField) -> String {
 /// Return a canonical five-field Cron representation.
 pub fn CronExpr::to_string(self : CronExpr) -> String {
   [
-    self.minute.to_cron_string(),
-    self.hour.to_cron_string(),
-    self.day_of_month.to_cron_string(),
-    self.month.to_cron_string(),
-    self.day_of_week.to_cron_string(),
+    self.minute.to_string(),
+    self.hour.to_string(),
+    self.day_of_month.to_string(),
+    self.month.to_string(),
+    self.day_of_week.to_string(),
   ].join(" ")
 }
 
