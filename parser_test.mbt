@@ -138,8 +138,7 @@ test "cron expressions round trip through to_string" {
 ///|
 test "named aliases serialize to deterministic numeric fields" {
   match parse("0 9 * JAN,MAR MON-FRI") {
-    Ok(expression) =>
-      assert_eq(expression.to_string(), "0 9 * 1,3 1-5")
+    Ok(expression) => assert_eq(expression.to_string(), "0 9 * 1,3 1-5")
     Err(message) => fail("expected aliases to parse: \{message}")
   }
 }
