@@ -29,8 +29,8 @@ git diff --exit-code
   next-trigger API, including canonical serialization.
 - The test suite covers valid expressions, month/day aliases, malformed input,
   numeric overflow, DOM/DOW semantics, cross-month rollover, and leap years.
-- `.github/workflows/ci.yml` installs MoonBit `0.10.3`, formats its isolated
-  runner checkout, and verifies every supported target on Linux, macOS, and
-  Windows.
+- `.github/workflows/ci.yml` installs the latest official MoonBit toolchain,
+  formats its isolated runner checkout, and verifies every supported target on
+  Linux, macOS, and Windows.
 - Public code and tests are written in MoonBit; source-line counts can be
   reproduced with `git ls-files '*.mbt' '*_test.mbt' | xargs wc -l` on POSIX.

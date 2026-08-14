@@ -82,9 +82,9 @@ which makes persisted schedules deterministic.
 
 ## Validation
 
-The GitHub Actions workflow installs MoonBit `0.10.3`, formats its isolated
-checkout, then runs warning-free checks, builds, generated-interface generation,
-and tests on Ubuntu, macOS, and Windows.
+The GitHub Actions workflow installs the latest official MoonBit toolchain,
+formats its isolated checkout, then runs warning-free checks, builds,
+generated-interface generation, and tests on Ubuntu, macOS, and Windows.
 
 Run the same checks locally:
 
