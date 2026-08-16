@@ -19,6 +19,12 @@ It is suitable for schedulers, automation tools, backend services, and CLIs.
 - Exposes `CronExpr::to_string()` for canonical serialization and config
   round-tripping.
 - Supports wasm, wasm-gc, JavaScript, and native targets.
+- Provides a deterministic in-memory scheduler with task lifecycle and retry
+  policies.
+- Includes task configuration parsing, dependency validation, conflict
+  detection, audit history, health reports, preflight checks, and snapshots.
+- Offers bounded windows, business-hours filtering, rate limiting, concurrency
+  policies, and deterministic benchmark/report output.
 
 ## Install
 
@@ -97,6 +103,20 @@ moon info
 ```
 
 See [CHANGELOG.md](CHANGELOG.md) for release history.
+
+## Production scheduler workflow
+
+Task definitions use the stable format `id|cron|enabled|max_attempts`:
+
+```text
+backup|0 2 * * *|true|3
+report|0 9 * * 1-5|true|1
+```
+
+Applications can load the document with `parse_task_document`, validate it
+with `preflight`, build bounded `ExecutionPlan` values, and record outcomes in
+an `AuditLog`. `SchedulerReport` and `SchedulerSnapshot` provide stable text
+summaries for health endpoints and operational runbooks.
 
 ## License
 
