@@ -78,3 +78,45 @@ test "task success schedules the following occurrence" {
     Err(message) => fail(message)
   }
 }
+
+///|
+test "scheduler controls task state and selects the earliest run" {
+  let hourly = match parse("0 * * * *") {
+    Ok(value) => value
+    Err(_) => panic()
+  }
+  let quarter = match parse("*/15 * * * *") {
+    Ok(value) => value
+    Err(_) => panic()
+  }
+  let now = Time::{
+    year: 2026,
+    month: 1,
+    day: 1,
+    hour: 9,
+    minute: 7,
+    weekday: 4,
+  }
+  let scheduler = Scheduler::new()
+  let first = match CronTask::new("hourly", hourly, now, 0) {
+    Ok(value) => value
+    Err(message) => fail(message)
+  }
+  let second = match CronTask::new("quarter", quarter, now, 0) {
+    Ok(value) => value
+    Err(message) => fail(message)
+  }
+  ignore(scheduler.add(first))
+  ignore(scheduler.add(second))
+  assert_eq(scheduler.count_state(Enabled), 2)
+  match scheduler.next_due() {
+    Some((id, time)) => {
+      assert_eq(id, "quarter")
+      assert_eq(time.minute, 15)
+    }
+    None => fail("expected an upcoming task")
+  }
+  assert_true(scheduler.disable("quarter"))
+  assert_eq(scheduler.count_state(Disabled), 1)
+  assert_true(scheduler.enable("quarter", now).unwrap())
+}

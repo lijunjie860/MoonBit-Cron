@@ -173,6 +173,104 @@ pub fn Scheduler::find(self : Scheduler, id : String) -> CronTask? {
 }
 
 ///|
+/// Disable a task selected by identifier.
+pub fn Scheduler::disable(self : Scheduler, id : String) -> Bool {
+  for task in self.tasks {
+    if task.id == id {
+      task.disable()
+      return true
+    }
+  }
+  false
+}
+
+///|
+/// Enable a task selected by identifier.
+pub fn Scheduler::enable(
+  self : Scheduler,
+  id : String,
+  from : Time,
+) -> Result[Bool, String] {
+  for task in self.tasks {
+    if task.id == id {
+      match task.enable(from) {
+        Ok(_) => return Ok(true)
+        Err(message) => return Err(message)
+      }
+    }
+  }
+  Ok(false)
+}
+
+///|
+/// Record a successful run for one task.
+pub fn Scheduler::record_success(
+  self : Scheduler,
+  id : String,
+  at : Time,
+) -> Result[Bool, String] {
+  for task in self.tasks {
+    if task.id == id {
+      match task.record_success(at) {
+        Ok(_) => return Ok(true)
+        Err(message) => return Err(message)
+      }
+    }
+  }
+  Ok(false)
+}
+
+///|
+/// Record a failed run for one task.
+pub fn Scheduler::record_failure(
+  self : Scheduler,
+  id : String,
+  at : Time,
+) -> Bool {
+  for task in self.tasks {
+    if task.id == id {
+      task.record_failure(at)
+      return true
+    }
+  }
+  false
+}
+
+///|
+/// Return the earliest next run among enabled tasks.
+pub fn Scheduler::next_due(self : Scheduler) -> (String, Time)? {
+  let mut selected : (String, Time)? = None
+  for task in self.tasks {
+    if task.state is Enabled {
+      match task.next_run {
+        Some(candidate) =>
+          match selected {
+            None => selected = Some((task.id, candidate))
+            Some((_, current)) =>
+              if candidate.compare(current) < 0 {
+                selected = Some((task.id, candidate))
+              }
+          }
+        None => ()
+      }
+    }
+  }
+  selected
+}
+
+///|
+/// Count tasks in a lifecycle state.
+pub fn Scheduler::count_state(self : Scheduler, state : TaskState) -> Int {
+  let mut count = 0
+  for task in self.tasks {
+    if task.state == state {
+      count = count + 1
+    }
+  }
+  count
+}
+
+///|
 /// Number of tasks currently stored.
 pub fn Scheduler::length(self : Scheduler) -> Int {
   self.tasks.length()
